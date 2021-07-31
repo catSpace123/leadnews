@@ -1,0 +1,87 @@
+spring:
+  profiles:
+    active: dev
+---
+server:
+  port: 9003
+spring:
+  application:
+    name: leadnews-article
+  profiles: dev
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.211.136:3306/leadnews_article?useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+  cloud:
+    nacos:
+      server-addr: 192.168.211.136:8848
+      discovery:
+        server-addr: ${spring.cloud.nacos.server-addr}
+  kafka:     #消费者
+    # 配置连接到服务端集群的配置项 ip:port,ip:port
+    bootstrap-servers: 192.168.211.136:9092
+    consumer:
+      #      auto-commit-interval: 100  设置自动提交偏移量时间
+      auto-offset-reset: earliest
+      # enable-auto-commit: false # 不开启自动commit(提交offset)
+      group-id: leadnews-article
+      # 默认值即为字符串
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      # 默认值即为字符串
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
+# 设置Mapper接口所对应的XML文件位置，如果你在Mapper接口中有自定义方法，需要进行该配置
+mybatis-plus:
+  mapper-locations: classpath*:mapper/*.xml
+  # 设置别名包扫描路径，通过该属性可以给包中的类注册别名
+  type-aliases-package: com.feng.article.pojo
+  global-config:
+    datacenter-id: 0  #数据中心id
+    worker-id: 1      #机器工作id
+logging:
+  level.com: debug
+---
+server:
+  port: 9003
+spring:
+  application:
+    name: leadnews-user
+  profiles: pro
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.211.136:3306/leadnews_article?useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+  cloud:
+    nacos:
+      server-addr: 192.168.211.136:8848
+      discovery:
+        server-addr: ${spring.cloud.nacos.server-addr}
+# 设置Mapper接口所对应的XML文件位置，如果你在Mapper接口中有自定义方法，需要进行该配置
+mybatis-plus:
+  mapper-locations: classpath*:mapper/*.xml
+  # 设置别名包扫描路径，通过该属性可以给包中的类注册别名
+  type-aliases-package: com.feng.article.pojo
+---
+server:
+  port: 9003
+spring:
+  application:
+    name: leadnews-user
+  profiles: test
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.211.136:3306/leadnews_article?useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+  cloud:
+    nacos:
+      server-addr: 192.168.211.136:8848
+      discovery:
+        server-addr: ${spring.cloud.nacos.server-addr}
+# 设置Mapper接口所对应的XML文件位置，如果你在Mapper接口中有自定义方法，需要进行该配置
+mybatis-plus:
+  mapper-locations: classpath*:mapper/*.xml
+  # 设置别名包扫描路径，通过该属性可以给包中的类注册别名
+  type-aliases-package: com.feng.article.pojo

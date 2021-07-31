@@ -1,0 +1,39 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.feng.article.mapper.ApArticleMapper">
+    <select id="searchArticle" resultType="com.feng.article.pojo.ApArticle" parameterType="map">
+        SELECT
+        ac.*
+        FROM
+        ap_article ac,
+        ap_article_config ap
+        <where>
+            and ac.id = ap.article_id
+            AND ap.is_delete = 0
+            AND ap.is_down = 0
+            <if test="channelId != 0">
+                AND ac.channel_id = #{channelId}
+            </if>
+        </where>
+        ORDER BY
+        ac.publish_time DESC
+        LIMIT #{page},#{size}
+    </select>
+
+    <select id="count" resultType="long" parameterType="integer">
+        SELECT
+        count(*)
+        FROM
+        ap_article ac,
+        ap_article_config ap
+        <where>
+            and ac.id = ap.article_id
+            AND ap.is_delete = 0
+            AND ap.is_down = 0
+            <if test="channelId != 0">
+                AND ac.channel_id = #{channelId}
+            </if>
+        </where>
+    </select>
+</mapper>
